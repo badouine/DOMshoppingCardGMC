@@ -1,8 +1,29 @@
 let carts = document.querySelectorAll('.add-cart');
+let products = [
+	{
+		name: 'Grey tshirt',
+		tag: 'greyti',
+		price: 15,
+		inCart: 0
+	},
+
+	{
+		name: 'nourog doll',
+		tag: 'nrski',
+		price: 43,
+		inCart: 0
+	},
+	{
+		name: 'jodo bida',
+		tag: 'wala',
+		price: 20,
+		inCart: 0
+	}
+]
 
 for(let i=0;i < carts.length; i++){
 	carts[i].addEventListener('click', () => {
-		cartNumbers();
+		cartNumbers(products[i]);
 	})
 }
 
@@ -13,7 +34,8 @@ function onLoadCartNumbers(){
 		}
 	}
  
-function cartNumbers(){
+function cartNumbers(product){
+	console.log("the product clicked is", product);
 	let productNumbers = localStorage.getItem('cartNumbers');
 	productNumbers = parseInt(productNumbers);
 
@@ -24,6 +46,31 @@ function cartNumbers(){
 		localStorage.setItem('cartNumbers', 1);
 		document.querySelector('.cart span').textContent = 1;
 	}
+
+	setItems(product);
+}
+
+function setItems(product){
+	let cartItems = localStorage.getItem('productsIncart');
+	cartItems = JSON.parse(cartItems);
+	if(cartItems != null){
+		if (cartItems[product] != undefined) {
+			cartItems = {
+				...cartItems, 
+				[product]: product
+			}
+		}
+		cartItems[product]+= 1;
+	}else{
+	
+		cartItems = {
+			[product]: product
+		}
+	}	
+	cartItems = {
+		[product]: product
+	}
+	localStorage.setItem("productsIncart", JSON.stringify(cartItems));
 }
 
 onLoadCartNumbers();
